@@ -1,0 +1,43 @@
+kmeans:
+  enabled: true
+
+  parameters:
+    n_clusters:
+      - 5
+      - 10
+      - 15
+
+dbscan:
+  enabled: true
+
+  parameters:
+    eps:
+      - 0.3
+      - 0.5
+      - 0.7
+
+    min_samples:
+      - 5
+      - 10
+
+hdbscan:
+  enabled: true
+
+  parameters:
+    min_cluster_size:
+      - 10
+      - 20
+      - 50
+
+agglomerative:
+  enabled: true
+
+  parameters:
+    n_clusters:
+      - 5
+      - 10
+      - 15
+
+    linkage:
+      - ward
+      - average

@@ -1,0 +1,14 @@
+dataset:
+  path: data/raw/some_product_names.xlsx
+  text_column: Name
+
+embeddings:
+  model_name: sentence-transformers/all-MiniLM-L6-v2
+  batch_size: 32
+  normalize: true
+
+experiment:
+  random_state: 42
+
+storage:
+  embeddings_path: data/embeddings/product_embeddings.npy

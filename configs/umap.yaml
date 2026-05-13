@@ -1,0 +1,16 @@
+umap:
+  n_neighbors: 15
+  min_dist: 0.1
+  metric: cosine
+  random_state: 42
+
+dimension_sweep:
+  dimensions:
+    - 256
+    - 128
+    - 64
+    - 32
+    - 16
+    - 8
+    - 4
+    - 2

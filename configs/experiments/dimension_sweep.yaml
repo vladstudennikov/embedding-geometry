@@ -1,0 +1,17 @@
+experiment:
+  name: dimension_sweep
+
+outputs:
+  results_dir: results
+  figures_dir: figures
+  logs_dir: logs
+
+dimensions:
+  - 256
+  - 128
+  - 64
+  - 32
+  - 16
+  - 8
+  - 4
+  - 2
