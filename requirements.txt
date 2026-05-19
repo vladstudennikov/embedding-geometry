@@ -8,3 +8,6 @@ hdbscan
 pyyaml
 openpyxl
 jupyter
+scipy
+seaborn
+tqdm
