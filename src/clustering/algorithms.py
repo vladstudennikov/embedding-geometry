@@ -5,6 +5,7 @@ from sklearn.cluster import (
 )
 
 import hdbscan
+from scipy.cluster.hierarchy import linkage, fcluster
 
 
 class ClusteringFactory:
@@ -40,14 +41,14 @@ class ClusteringFactory:
 
         elif algorithm_name == "agglomerative":
 
-            linkage = parameters["linkage"]
+            linkage_type = parameters["linkage"]
 
             kwargs = {
                 "n_clusters": parameters["n_clusters"],
-                "linkage": linkage
+                "linkage": linkage_type
             }
 
-            if linkage != "ward":
+            if linkage_type != "ward":
                 kwargs["metric"] = "cosine"
 
             return AgglomerativeClustering(
@@ -58,3 +59,24 @@ class ClusteringFactory:
             raise ValueError(
                 f"Unknown algorithm: {algorithm_name}"
             )
+
+
+class HierarchicalClustering:
+    """
+    Wrapper for Scipy hierarchical clustering to allow for linkage tree 
+    and multi-level cuts.
+    """
+
+    @staticmethod
+    def compute_linkage(embeddings, method='single', metric='cosine'):
+        """
+        Computes the linkage matrix.
+        """
+        return linkage(embeddings, method=method, metric=metric)
+
+    @staticmethod
+    def get_clusters(linkage_matrix, k):
+        """
+        Extracts cluster assignments for a given number of clusters k.
+        """
+        return fcluster(linkage_matrix, t=k, criterion='maxclust')

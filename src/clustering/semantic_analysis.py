@@ -45,3 +45,41 @@ class ClusterSemanticAnalyzer:
             }
             
         return results
+
+    @staticmethod
+    def compute_jaccard_overlap(set1, set2):
+        """
+        Computes Jaccard similarity between two sets of keywords.
+        """
+        s1 = set(set1)
+        s2 = set(set2)
+        if not s1 and not s2:
+            return 0.0
+        return len(s1.intersection(s2)) / len(s1.union(s2))
+
+    def compute_hierarchy_stability(self, level_results_parent, level_results_child, mapping_df, parent_col, child_col):
+        """
+        Computes similarity between parent and child clusters in a hierarchy.
+        """
+        stability_results = []
+        
+        # Get unique parent-child pairs from mapping
+        pairs = mapping_df[[parent_col, child_col]].drop_duplicates()
+        
+        for _, row in pairs.iterrows():
+            p_id = int(row[parent_col])
+            c_id = int(row[child_col])
+            
+            if p_id in level_results_parent and c_id in level_results_child:
+                p_keywords = level_results_parent[p_id]["top_keywords"]
+                c_keywords = level_results_child[c_id]["top_keywords"]
+                
+                jaccard = self.compute_jaccard_overlap(p_keywords, c_keywords)
+                
+                stability_results.append({
+                    "parent_id": p_id,
+                    "child_id": c_id,
+                    "jaccard_similarity": jaccard
+                })
+                
+        return pd.DataFrame(stability_results)
