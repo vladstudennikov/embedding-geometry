@@ -4,9 +4,14 @@ import math
 import os
 import re
 
-def get_computers(n: int, input_path: str = "data/computers.csv", output_path: str = None) -> pd.DataFrame:
+def get_computers(n: int, input_path: str = "data/raw/computers.csv", output_path: str = None) -> pd.DataFrame:
     if n <= 0:
         raise ValueError("n must be a positive integer.")
+
+    root = os.path.dirname(os.path.abspath(__file__))
+    root = os.path.dirname(root)
+    root = os.path.dirname(root)
+    input_path = os.path.join(root, input_path)
 
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"Input file not found at: {input_path}")
@@ -97,9 +102,13 @@ def get_computers(n: int, input_path: str = "data/computers.csv", output_path: s
     sampled_df = df.loc[sampled_indices].copy()
     sampled_df = sampled_df.drop(columns=['brand'])
     if output_path is None:
-        output_path = f"data/computers_{n}.csv"
-
-    sampled_df.to_csv(output_path, index=False)
+        version = 1
+        output_path = f"data/raw/computers_{n}_v{version}.csv"
+        while os.path.exists(os.path.join(root, output_path)):
+            version += 1
+            output_path = f"data/raw/computers_{n}_v{version}.csv"
+    
+    sampled_df.to_csv(os.path.join(root, output_path), index=False)
     print(f"Successfully wrote {n} products from {k} producers to {output_path}.")
     print(f"Selected producers and counts: {sizes}")
     
